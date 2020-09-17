@@ -5,10 +5,22 @@ import java.util.List;
 
 public class Map {
     Map(String data){
-        //TODO;
+        deskData = data;
     }
 
-    private List<List<Field>> map;
+    private String deskData;
+    private List<ArrayList<Field>> map = new ArrayList<ArrayList<Field>>();
+    private int robotStartX;
+    private int robotStartY;
+
+    public void generateMap() {
+        String[] partOfInput = deskData.split("#");
+        createWalls(partOfInput[0]);
+    }
+
+    public void createWalls(String walls) {
+
+    }
 
     public List<Field> getClowns(){
 
