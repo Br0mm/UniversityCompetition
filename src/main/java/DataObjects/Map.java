@@ -8,7 +8,7 @@ public class Map {
         //TODO;
     }
 
-
+    private List<List<Field>> map;
 
     public List<Field> getClowns(){
 
