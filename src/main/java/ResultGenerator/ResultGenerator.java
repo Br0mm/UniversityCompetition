@@ -1,9 +1,11 @@
+package ResultGenerator;
+
 import java.util.ArrayList;
 
 public class ResultGenerator {
     private ArrayList<StringBuilder> commands = new ArrayList<>();
 
-    ResultGenerator(){
+    public ResultGenerator(){
         commands.add(new StringBuilder());
     }
 
@@ -48,7 +50,6 @@ public class ResultGenerator {
         commands.add(new StringBuilder());
     }
 
-
     public void resetTeleport(int number){
         commands.get(number).append("R");
     }
@@ -57,7 +58,7 @@ public class ResultGenerator {
         commands.get(number).append("T" + "(").append(x).append(",").append(y).append(")");
     }
 
-    private String getResult() {
+    public String getResult() {
         StringBuilder result = new StringBuilder();
         int separators = commands.size() - 1;
         for (StringBuilder item : commands) {
