@@ -18,18 +18,27 @@ public class RobotWrappy2019 {
     private int id;
     private static int counter = 0;
 
-    private ResultGenerator resultGenerator = new ResultGenerator();
+    private static ResultGenerator resultGenerator = new ResultGenerator();
 
     private Orientation orientation;
 
-    private enum Orientation{
+    private enum Orientation {
         UP,
+        RIGHT,
         DOWN,
-        LEFT,
-        RIGHT;
+        LEFT;
+        private static Orientation[] vals = values();
+
+        public Orientation next() {
+            return vals[(this.ordinal() + 1) % vals.length];
+        }
+
+        public Orientation previous() {
+            return vals[(this.ordinal() - 1) % vals.length];
+        }
     }
 
-    public RobotWrappy2019(int x, int y, Orientation orientation){
+    public RobotWrappy2019(int x, int y, Orientation orientation) {
         this.x = x;
         this.y = y;
 
@@ -38,52 +47,53 @@ public class RobotWrappy2019 {
         id = counter++;
     }
 
-   /* public void turnRight(int number){
-
+    public void turnRight() {
+        resultGenerator.turnRight(id);
+        orientation = orientation.next();
     }
 
-    public void turnLeft(int number){
-        resultGenerator
+    public void turnLeft() {
+        resultGenerator.turnLeft(id);
+        orientation = orientation.previous();
     }
 
-    public void moveUp(int number){
-        commands.get(number).append("W");
+    public void moveUp() {
+        resultGenerator.moveUp(id);
     }
 
-    public void moveDown(int number){
-        commands.get(number).append("S");
+    public void moveDown() {
+        resultGenerator.moveDown(id);
     }
 
-    public void moveLeft(int number){
-        commands.get(number).append("A");
+    public void moveLeft() {
+        resultGenerator.moveLeft(id);
     }
 
-    public void moveRight(int number){
-        commands.get(number).append("D");
+    public void moveRight() {
+        resultGenerator.moveRight(id);
     }
 
-    public void addHand(int number, int dx, int dy){
-        commands.get(number).append("B" + "(").append(dx).append(",").append(dy).append(")");
+    public void addHand(int dx, int dy) {
+        resultGenerator.addHand(id, dx, dy);
     }
 
-    public void useFastWheel(int number){
-        commands.get(number).append("F");
+    public void useFastWheel() {
+        resultGenerator.useFastWheel(id);
     }
 
-    public void skip(int number){
-        commands.get(number).append("Z");
+    public void skipTurn() {
+        resultGenerator.skip(id);
     }
 
-    public void spawnCLoWn(int number){
-        commands.get(number).append("C");
-        commands.add(new StringBuilder());
+    public void spawnCLoWn() {
+        resultGenerator.spawnCLoWn(id);
     }
 
-    public void resetTeleport(int number){
-        commands.get(number).append("R");
+    public void resetTeleport() {
+        resultGenerator.resetTeleport(id);
     }
 
-    public void useTeleport(int number, int x, int y){
-        commands.get(number).append("T" + "(").append(x).append(",").append(y).append(")");
-    }*/
+    public void useTeleport(int x, int y) {
+        resultGenerator.useTeleport(id, x, y);
+    }
 }
