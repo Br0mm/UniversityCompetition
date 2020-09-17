@@ -18,7 +18,7 @@ public class RobotWrappy2019 {
     private int id;
     private static int counter = 0;
 
-    private ResultGenerator resultGenerator = new ResultGenerator();
+    private static ResultGenerator resultGenerator = new ResultGenerator();
 
     private Orientation orientation;
 
