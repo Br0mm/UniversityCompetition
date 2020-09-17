@@ -5,10 +5,21 @@ public class Field {
         this.x = x;
         this.y = y;
     }
+
+    public enum Booster {
+        DRILL,
+        CLONE,
+        FASTWHEEL,
+        TELEPORT,
+        MANIPULATOR,
+        NONE
+    }
+
+    Booster booster = Booster.NONE;
     private int x;
     private int y;
-    private boolean isPainted;
-    private boolean isObstacle;
+    private boolean isPainted = false;
+    private boolean isObstacle = false;
 
     public void isPaintedSetter(boolean isPainted) {
         this.isPainted = isPainted;
