@@ -59,18 +59,22 @@ public class RobotWrappy2019 {
 
     public void moveUp() {
         resultGenerator.moveUp(id);
+        x++;
     }
 
     public void moveDown() {
         resultGenerator.moveDown(id);
+        x--;
     }
 
     public void moveLeft() {
         resultGenerator.moveLeft(id);
+        y--;
     }
 
     public void moveRight() {
         resultGenerator.moveRight(id);
+        y++;
     }
 
     public void addHand(int dx, int dy) {
