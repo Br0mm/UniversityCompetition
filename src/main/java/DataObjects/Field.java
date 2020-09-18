@@ -21,27 +21,27 @@ public class Field {
     private boolean isPainted = false;
     private boolean isObstacle = false;
 
-    public void isPaintedSetter(boolean isPainted) {
+    public void setIsPainted(boolean isPainted) {
         this.isPainted = isPainted;
     }
 
-    public boolean isPaintedGetter() {
+    public boolean getIsPainted() {
         return isPainted;
     }
 
-    public void isObstacleSetter(boolean isObstacle) {
+    public void setIsObstacle(boolean isObstacle) {
         this.isObstacle = isObstacle;
     }
 
-    public boolean isObstacleGetter() {
+    public boolean getIsObstacle() {
         return isObstacle;
     }
 
-    public int xGetter() {
+    public int getX() {
         return x;
     }
 
-    public int yGetter() {
+    public int getY() {
         return y;
     }
 }
