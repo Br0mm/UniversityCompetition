@@ -7,6 +7,7 @@ public class Field {
     }
 
     public enum Booster {
+        START,
         DRILL,
         CLONE,
         FASTWHEEL,
@@ -15,7 +16,7 @@ public class Field {
         NONE
     }
 
-    Booster booster = Booster.NONE;
+    public Booster booster = Booster.NONE;
     private int x;
     private int y;
     private boolean isPainted = false;
