@@ -49,7 +49,7 @@ public class MapView extends Application {
         point.getChildren().add(rect);
         if (field.getIsObstacle()) rect.setFill(Color.GRAY);
         else rect.setFill(Color.WHITE);
-        if (field.booster.equals(Field.Booster.START)) {
+        if (field.booster.equals(Map.Booster.START)) {
             Circle start = new Circle();
             start.setCenterX(x + 5);
             start.setCenterY(y + 5);

@@ -13,10 +13,11 @@ public class Field {
         FASTWHEEL,
         TELEPORT,
         MANIPULATOR,
+        MYSTERIOUS_POINT,
         NONE
     }
 
-    public Booster booster = Booster.NONE;
+    public Map.Booster booster = Map.Booster.NONE;
     private int x;
     private int y;
     private boolean isPainted = false;

@@ -1,6 +1,7 @@
 package DataObjects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Map {
@@ -16,15 +17,17 @@ public class Map {
     private int robotStartY;
     public int sizeX = 0;
     public int sizeY = 0;
+    public java.util.Map <Booster, List<String>> boosterListMap = new HashMap<>();
     private WallDirection direction = WallDirection.NONE;
 
     private void generateMap() {
         String[] partOfInput = mapStringData.split("#");
         findMapSize(partOfInput[0]);
-        createWalls(partOfInput[0]);
+        createWalls(partOfInput[0], 1);
         createStartPoint(partOfInput[1]);
         direction = WallDirection.NONE;
         createObstacles(partOfInput[2]);
+        createBoosters(partOfInput[3]);
     }
 
     //нужно для построения стен
@@ -33,6 +36,17 @@ public class Map {
         RIGHT,
         LEFT,
         DOWN,
+        NONE
+    }
+
+    public enum Booster {
+        START,
+        DRILL,
+        CLONE,
+        FASTWHEEL,
+        TELEPORT,
+        MANIPULATOR,
+        MYSTERIOUS_POINT,
         NONE
     }
 
@@ -62,18 +76,19 @@ public class Map {
         }
     }
 
-    private void connectTwoPointsOfObstacle(int previousX, int previousY, int currentX, int currentY) {
+    //offset нужен, чтобы правильно ставить препятствия в зависимости от того стена у нас илпреграда внутри
+    private void connectTwoPointsOfWall(int previousX, int previousY, int currentX, int currentY, int offset) {
         if (currentX != previousX) {
             if (currentX > previousX) {
                 direction = WallDirection.RIGHT;
                 for (int j = previousX; j < currentX; j++) {
-                    if (previousY != 0) map1[j][previousY - 1].setIsObstacle(true);
+                    if (previousY != 0) map1[j][previousY - offset].setIsObstacle(true);
                 }
             } else {
-                if (direction.equals(WallDirection.DOWN)) previousX--;
+                previousX--;
                 direction = WallDirection.LEFT;
                 for (int j = previousX; j >= currentX; j--) {
-                    map1[j][previousY].setIsObstacle(true);
+                    map1[j][previousY - (1 - offset)].setIsObstacle(true);
                 }
             }
         } else
@@ -81,19 +96,20 @@ public class Map {
             if (currentY > previousY) {
                 direction = WallDirection.UP;
                 for (int j = previousY; j < currentY; j++) {
-                    map1[previousX][j].setIsObstacle(true);
+                    map1[previousX - (1 - offset)][j].setIsObstacle(true);
                 }
             } else {
-                if (direction.equals(WallDirection.RIGHT)) previousY--;
+                previousY--;
                 direction = WallDirection.DOWN;
                 for (int j = previousY; j >= currentY; j--) {
-                    if (previousX != 0) map1[previousX - 1][j].setIsObstacle(true);
+                    if (previousX != 0) map1[previousX - offset][j].setIsObstacle(true);
                 }
             }
         }
     }
 
-    private void createWalls(String walls) {
+    //offset нужен для connectTwoPointsOfWall
+    private void createWalls(String walls, int offset) {
         String[] coordinates = walls.split(",");
         int firstX = Integer.parseInt(coordinates[0].substring(1));
         int firstY = Integer.parseInt(coordinates[1].substring(0, coordinates[1].length() - 1));
@@ -108,25 +124,42 @@ public class Map {
             currentY = Integer.parseInt(coordinates[i].substring(0, coordinates[i].length() - 1));
             i++;
 
-            connectTwoPointsOfObstacle(previousX, previousY, currentX, currentY);
+            connectTwoPointsOfWall(previousX, previousY, currentX, currentY, offset);
 
             previousX = currentX;
             previousY = currentY;
         }
-        connectTwoPointsOfObstacle(currentX, currentY, firstX, firstY);
+        connectTwoPointsOfWall(currentX, currentY, firstX, firstY, offset);
     }
 
     private void createStartPoint(String start) {
         String[] coordinates = start.split(",");
         robotStartX = Integer.parseInt(coordinates[0].substring(1));
         robotStartY = Integer.parseInt(coordinates[1].substring(0, coordinates[1].length() - 1));
-        map1[robotStartX][robotStartY].booster = Field.Booster.START;
+        map1[robotStartX][robotStartY].booster = Booster.START;
     }
 
     public void createObstacles(String obstacles) {
+        if (obstacles.equals("")) return;
         String[] groups = obstacles.split(";");
         for (String group: groups) {
-            //TODO
+            createWalls(group, 0);
+        }
+    }
+
+    public void createBoosters(String obstacles) {
+        if (obstacles.equals("")) return;
+        String[] boosters = obstacles.split(";");
+        for (String booster: boosters) {
+            if (booster.startsWith("X")) {
+                if (!boosterListMap.containsKey(Booster.MYSTERIOUS_POINT))
+                    boosterListMap.put(Booster.MYSTERIOUS_POINT, new ArrayList<>());
+                boosterListMap.get(Booster.MYSTERIOUS_POINT).add(booster.substring(1));
+                String[] coordinates = booster.split(",");
+                map1[Integer.parseInt(coordinates[0].substring(2))]
+                        [Integer.parseInt(coordinates[1].substring(0, coordinates[1].length() - 1))].booster = Booster.MYSTERIOUS_POINT;
+            }
+            //TODO оставшиеся бустеры
         }
     }
 
