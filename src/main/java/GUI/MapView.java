@@ -32,7 +32,7 @@ public class MapView extends Application {
 
             for (int i = 0; i < test.sizeX; i++) {
                 for (int j = 0; j < test.sizeY; j++) {
-                    map.getChildren().add(createMapPart(test.map1[i][j], i * bodySize, height - j * bodySize));
+                    map.getChildren().add(createMapPart(test.map[i][j], i * bodySize, height - j * bodySize));
                 }
             }
             Scene showMap = new Scene(map);
@@ -49,13 +49,35 @@ public class MapView extends Application {
         point.getChildren().add(rect);
         if (field.getIsObstacle()) rect.setFill(Color.GRAY);
         else rect.setFill(Color.WHITE);
-        if (field.booster.equals(Map.Booster.START)) {
-            Circle start = new Circle();
-            start.setCenterX(x + 5);
-            start.setCenterY(y + 5);
-            start.setRadius(2.5);
-            start.setFill(Color.RED);
-            point.getChildren().add(start);
+        if (!field.booster.equals(Map.Booster.NONE)) {
+            Circle booster = new Circle();
+            booster.setCenterX(x + 5);
+            booster.setCenterY(y + 5);
+            booster.setRadius(2.5);
+            switch (field.booster) {
+                case Map.Booster.START:
+                    booster.setFill(Color.RED);
+                    break;
+                case Map.Booster.DRILL:
+                    booster.setFill(Color.GREEN);
+                    break;
+                case Map.Booster.CLONE:
+                    booster.setFill(Color.BLUE);
+                    break;
+                case Map.Booster.FASTWHEEL:
+                    booster.setFill(Color.BROWN);
+                    break;
+                case Map.Booster.TELEPORT:
+                    booster.setFill(Color.BLUEVIOLET);
+                    break;
+                case Map.Booster.MANIPULATOR:
+                    booster.setFill(Color.YELLOW);
+                    break;
+                case Map.Booster.MYSTERIOUS_POINT:
+                    booster.setFill(Color.DARKBLUE);
+                    break;
+            }
+            point.getChildren().add(booster);
         }
         return point;
     }

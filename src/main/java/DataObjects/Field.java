@@ -6,17 +6,6 @@ public class Field {
         this.y = y;
     }
 
-    public enum Booster {
-        START,
-        DRILL,
-        CLONE,
-        FASTWHEEL,
-        TELEPORT,
-        MANIPULATOR,
-        MYSTERIOUS_POINT,
-        NONE
-    }
-
     public Map.Booster booster = Map.Booster.NONE;
     private int x;
     private int y;
