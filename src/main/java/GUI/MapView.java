@@ -55,25 +55,25 @@ public class MapView extends Application {
             booster.setCenterY(y + 5);
             booster.setRadius(2.5);
             switch (field.booster) {
-                case Map.Booster.START:
+                case START:
                     booster.setFill(Color.RED);
                     break;
-                case Map.Booster.DRILL:
+                case DRILL:
                     booster.setFill(Color.GREEN);
                     break;
-                case Map.Booster.CLONE:
+                case CLONE:
                     booster.setFill(Color.BLUE);
                     break;
-                case Map.Booster.FASTWHEEL:
+                case FASTWHEEL:
                     booster.setFill(Color.BROWN);
                     break;
-                case Map.Booster.TELEPORT:
+                case TELEPORT:
                     booster.setFill(Color.BLUEVIOLET);
                     break;
-                case Map.Booster.MANIPULATOR:
+                case MANIPULATOR:
                     booster.setFill(Color.YELLOW);
                     break;
-                case Map.Booster.MYSTERIOUS_POINT:
+                case MYSTERIOUS_POINT:
                     booster.setFill(Color.DARKBLUE);
                     break;
             }
