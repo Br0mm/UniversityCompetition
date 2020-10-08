@@ -13,8 +13,8 @@ public class Processing {
     public void mapSplitter() {
     }
 
-    public void leftHandMovingForOneRobot() {
-        Map map = new Map("TODO");
+    public void leftHandMovingForOneRobot(String dataForMap) {
+        Map map = new Map(dataForMap);
         RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
         Field leftField = robot.getLeftField();
         Field frontLeftField = robot.getFrontLeftField();
