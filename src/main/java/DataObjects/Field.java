@@ -20,6 +20,10 @@ public class Field {
         return isPainted;
     }
 
+    public boolean isPaintedOrObstacle() {
+        return isPainted || isObstacle;
+    }
+
     public void setIsObstacle(boolean isObstacle) {
         this.isObstacle = isObstacle;
     }

@@ -13,8 +13,8 @@ public class Map {
     private String mapStringData;
     public Field[][] map;
     //private List<ArrayList<Field>> map = new ArrayList<>();
-    private int robotStartX;
-    private int robotStartY;
+    public int robotStartX;
+    public int robotStartY;
     public int sizeX = 0;
     public int sizeY = 0;
     public java.util.Map <Booster, List<Field>> boosterListMap = new HashMap<>();
