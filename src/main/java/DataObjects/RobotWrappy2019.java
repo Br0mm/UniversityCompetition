@@ -73,12 +73,33 @@ public class RobotWrappy2019 {
     }
 
     private void countAndPaintFields() {
-        leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
-                [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
+        try {
+            leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
+                    [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
+        } catch (IndexOutOfBoundsException e) {
+            leftField = new Field(1, 1);
+            leftField.setIsObstacle(true);
+        }
+        try {
+            frontLeftField = map.map[x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy]
+                    [y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx];
+        } catch (IndexOutOfBoundsException e) {
+            frontLeftField = new Field(1, 1);
+            frontLeftField.setIsObstacle(true);
+        }
+        try {
+            frontMiddleField = map.map[x + orientation.dx * 2][y + orientation.dy * 2];
+        } catch (IndexOutOfBoundsException e) {
+            frontMiddleField = new Field(1, 1);
+            frontMiddleField.setIsObstacle(true);
+        }
+        /*
+         leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
+                    [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
         frontLeftField = map.map[x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy]
                 [y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx];
         frontMiddleField = map.map[x + orientation.dx * 2]
-                [y + orientation.dy * 2];
+                [y + orientation.dy * 2]; */
         frontLeftField.setIsPainted(true);
         frontMiddleField.setIsPainted(true);
         //map.map[robot.getX() + 1][robot.getY() + 1].setIsPainted(true);
