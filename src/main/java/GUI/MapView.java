@@ -2,6 +2,8 @@ package GUI;
 
 import DataObjects.Field;
 import DataObjects.Map;
+import DataObjects.RobotWrappy2019;
+import Processing.Processing;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -22,6 +24,9 @@ public class MapView extends Application {
     public void start (Stage primaryStage) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-003.desc"))))) {
             Map test = new Map(reader.readLine());
+            Processing.leftHandMovingForOneRobot(test);
+
+
 
             int height = bodySize * (test.sizeY + 1);
             int width = bodySize * (test.sizeX + 1);
@@ -38,6 +43,7 @@ public class MapView extends Application {
             Scene showMap = new Scene(map);
             primaryStage.setScene(showMap);
             primaryStage.show();
+            String result = RobotWrappy2019.getResultGenerator().getResult();
         }
     }
 
@@ -48,6 +54,7 @@ public class MapView extends Application {
         Group point = new Group();
         point.getChildren().add(rect);
         if (field.getIsObstacle()) rect.setFill(Color.GRAY);
+        if (field.getIsPainted()) rect.setFill(Color.YELLOW);
         else rect.setFill(Color.WHITE);
         if (!field.booster.equals(Map.Booster.NONE)) {
             Circle booster = new Circle();
@@ -71,7 +78,7 @@ public class MapView extends Application {
                     booster.setFill(Color.BLUEVIOLET);
                     break;
                 case MANIPULATOR:
-                    booster.setFill(Color.YELLOW);
+                    booster.setFill(Color.ORANGE);
                     break;
                 case MYSTERIOUS_POINT:
                     booster.setFill(Color.DARKBLUE);

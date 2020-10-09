@@ -10,6 +10,8 @@ public class Field {
     private int x;
     private int y;
     private boolean isPainted = false;
+    //это поле нужно, чтобы находить оставшиеся незакрашенные места, которые нужно закрасить
+    private boolean isPaintedCheck = false;
     private boolean isObstacle = false;
 
     public void setIsPainted(boolean isPainted) {
@@ -31,6 +33,10 @@ public class Field {
     public boolean getIsObstacle() {
         return isObstacle;
     }
+
+    public boolean getIsPaintedCheck() { return isPaintedCheck; }
+
+    public void setIsPaintedCheck(boolean isPaintedCheck) { this.isPaintedCheck = isPaintedCheck; }
 
     public int getX() {
         return x;

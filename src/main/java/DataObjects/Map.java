@@ -17,6 +17,7 @@ public class Map {
     public int robotStartY;
     public int sizeX = 0;
     public int sizeY = 0;
+    private int unpainted = 0;
     public java.util.Map <Booster, List<Field>> boosterListMap = new HashMap<>();
     private WallDirection direction = WallDirection.NONE;
 
@@ -182,6 +183,31 @@ public class Map {
         int y = Integer.parseInt(coordinate[1].substring(0, coordinate[1].length() - 1));
         map[x][y].booster = currentBooster;
         boosterListMap.get(currentBooster).add(map[x][y]);
+    }
+
+
+    public boolean hasUnpainted() {
+        unpainted = 0;
+        hasUnpaintedCheck(map[robotStartX][robotStartY]);
+        for (int k = 0; k < sizeX; k++) {
+            for (int j = 0; j < sizeY; j++) {
+                map[k][j].setIsPaintedCheck(false);
+            }
+        }
+        return unpainted > 0;
+    }
+
+    private void hasUnpaintedCheck(Field start) {
+        if (!start.getIsPaintedCheck()) {
+            if (!start.getIsObstacle() && !start.getIsPainted()) unpainted++;
+            start.setIsPaintedCheck(true);
+            if (!start.getIsObstacle()) {
+                hasUnpaintedCheck(map[start.getX() + 1][start.getY()]);
+                hasUnpaintedCheck(map[start.getX() - 1][start.getY()]);
+                hasUnpaintedCheck(map[start.getX()][start.getY() + 1]);
+                hasUnpaintedCheck(map[start.getX()][start.getY() - 1]);
+            }
+        }
     }
 
     public List<Field> getClowns(){

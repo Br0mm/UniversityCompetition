@@ -18,7 +18,7 @@ public class Processing {
         Field leftField = robot.getLeftField();
         Field frontLeftField = robot.getFrontLeftField();
         Field frontMiddleField = robot.getFrontMiddleField();
-        while (true /* map.hasUnpainted */) {
+        while (map.hasUnpainted()) {
             if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
                 robot.moveStraight();
             } else if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
