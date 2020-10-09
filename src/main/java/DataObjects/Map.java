@@ -203,9 +203,9 @@ public class Map {
             start.setIsPaintedCheck(true);
             if (!start.getIsObstacle()) {
                 hasUnpaintedCheck(map[start.getX() + 1][start.getY()]);
-                hasUnpaintedCheck(map[start.getX() - 1][start.getY()]);
+                if (start.getX() != 0) hasUnpaintedCheck(map[start.getX() - 1][start.getY()]);
                 hasUnpaintedCheck(map[start.getX()][start.getY() + 1]);
-                hasUnpaintedCheck(map[start.getX()][start.getY() - 1]);
+                if (start.getY() != 0) hasUnpaintedCheck(map[start.getX()][start.getY() - 1]);
             }
         }
     }
