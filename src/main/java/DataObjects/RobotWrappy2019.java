@@ -247,7 +247,7 @@ public class RobotWrappy2019 {
         return frontMiddleField;
     }
 
-    public Orientation getOrientation() {
-        return orientation;
+    public static ResultGenerator getResultGenerator() {
+        return resultGenerator;
     }
 }

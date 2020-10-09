@@ -13,9 +13,8 @@ public class Processing {
     public void mapSplitter() {
     }
 
-    public void leftHandMovingForOneRobot(String dataForMap) {
-        Map map = new Map(dataForMap);
-        RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
+    public static void leftHandMovingForOneRobot(Map map) {
+                RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
         Field leftField = robot.getLeftField();
         Field frontLeftField = robot.getFrontLeftField();
         Field frontMiddleField = robot.getFrontMiddleField();
