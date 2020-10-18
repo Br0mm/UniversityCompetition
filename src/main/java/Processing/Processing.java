@@ -3,8 +3,9 @@ package Processing;
 import DataObjects.Field;
 import DataObjects.Map;
 import DataObjects.RobotWrappy2019;
+import Debug.Test;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 
 public class Processing {
     public void searchShortestWay() {
@@ -19,6 +20,9 @@ public class Processing {
         Field frontLeftField = robot.getFrontLeftField();
         Field frontMiddleField = robot.getFrontMiddleField();
         while (map.hasUnpainted()) {
+            //добавил создание изображения поля для дебага во время дебага надо нажать show image
+            Test debug = new Test();
+            BufferedImage debugImage = debug.createImage(map);
             if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
                 robot.moveStraight();
             } else if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
