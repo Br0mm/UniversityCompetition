@@ -22,9 +22,9 @@ public class MapView extends Application {
 
     @Override
     public void start (Stage primaryStage) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-003.desc"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-005.desc"))))) {
             Map test = new Map(reader.readLine());
-            Processing.leftHandMovingForOneRobot(test);
+            //Processing.leftHandMovingForOneRobot(test);
 
 
 
