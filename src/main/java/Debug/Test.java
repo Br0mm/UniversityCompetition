@@ -11,15 +11,14 @@ import javax.swing.JPanel;
 public class Test extends JPanel {
 
     public BufferedImage createImage(Map currentMap) {
-        Map test = currentMap;
-        int height = (test.sizeY + 1);
-        int width = (test.sizeX + 1);
+        int height = (currentMap.sizeY + 1);
+        int width = (currentMap.sizeX + 1);
         BufferedImage bufferedImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
 
         Color color;
-        for (int i = 0; i < test.sizeX; i++) {
-            for (int j = 0; j < test.sizeY; j++) {
-                color = createMapPart(test.map[i][j], i, (height - j));
+        for (int i = 0; i < currentMap.sizeX; i++) {
+            for (int j = 0; j < currentMap.sizeY; j++) {
+                color = createMapPart(currentMap.map[i][j], i, (height - j));
                 bufferedImage.setRGB(i,(height - j - 1), color.getRGB());
             }
         }

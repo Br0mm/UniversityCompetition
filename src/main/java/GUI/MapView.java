@@ -51,11 +51,11 @@ public class MapView extends Application {
         Rectangle rect = new Rectangle(bodySize, bodySize);
         rect.setX(x);
         rect.setY(y);
+        rect.setFill(Color.WHITE);
         Group point = new Group();
         point.getChildren().add(rect);
         if (field.getIsObstacle()) rect.setFill(Color.GRAY);
         if (field.getIsPainted()) rect.setFill(Color.YELLOW);
-        else rect.setFill(Color.WHITE);
         if (!field.booster.equals(Map.Booster.NONE)) {
             Circle booster = new Circle();
             booster.setCenterX(x + 5);
