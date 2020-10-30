@@ -3,6 +3,7 @@ package GUI;
 import DataObjects.Field;
 import DataObjects.Map;
 import DataObjects.RobotWrappy2019;
+import Debug.Test;
 import Processing.Processing;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -15,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
 
@@ -23,11 +25,11 @@ public class MapView extends Application {
 
     @Override
     public void start (Stage primaryStage) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-013.desc"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-284.desc"))))) {
             Map test = new Map(reader.readLine());
             //Processing.leftHandMovingForOneRobot(test);
 
-            List<Field> path = Processing.Pathfinding.findPath(test.map[0][4], test.boosterListMap.get(Map.Booster.DRILL).get(0), test);
+            List<Field> path = Processing.Pathfinding.findPath(test.map[test.robotStartX][test.robotStartY], test.boosterListMap.get(Map.Booster.DRILL).get(0), test);
             for (int i = 0; i < path.size() - 1; i ++) {
                 test.map[path.get(i).getX()][path.get(i).getY()].booster = Map.Booster.TESTPATH;
             }
@@ -47,9 +49,12 @@ public class MapView extends Application {
                 }
             }
             Scene showMap = new Scene(map);
+            String result = RobotWrappy2019.getResultGenerator().getResult();
+            Test debug = new Test();
+            BufferedImage debugImage = debug.createImage(test);
             primaryStage.setScene(showMap);
             primaryStage.show();
-            String result = RobotWrappy2019.getResultGenerator().getResult();
+
         }
     }
 
