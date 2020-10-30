@@ -27,7 +27,7 @@ public class MapView extends Application {
             Map test = new Map(reader.readLine());
             //Processing.leftHandMovingForOneRobot(test);
 
-            List<Field> path = Processing.Pathfinding.findPath(test.map[2][2], test.map[6][20], test);
+            List<Field> path = Processing.Pathfinding.findPath(test.map[0][4], test.boosterListMap.get(Map.Booster.DRILL).get(0), test);
             for (int i = 0; i < path.size() - 1; i ++) {
                 test.map[path.get(i).getX()][path.get(i).getY()].booster = Map.Booster.TESTPATH;
             }
