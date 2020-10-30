@@ -16,15 +16,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.List;
 
 public class MapView extends Application {
     int bodySize = 10;
 
     @Override
     public void start (Stage primaryStage) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-003.desc"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-013.desc"))))) {
             Map test = new Map(reader.readLine());
-            Processing.leftHandMovingForOneRobot(test);
+            //Processing.leftHandMovingForOneRobot(test);
+
+            List<Field> path = Processing.Pathfinding.findPath(test.map[0][4], test.boosterListMap.get(Map.Booster.DRILL).get(0), test);
+            for (int i = 0; i < path.size() - 1; i ++) {
+                test.map[path.get(i).getX()][path.get(i).getY()].booster = Map.Booster.TESTPATH;
+            }
 
 
 
@@ -82,6 +88,9 @@ public class MapView extends Application {
                     break;
                 case MYSTERIOUS_POINT:
                     booster.setFill(Color.DARKBLUE);
+                    break;
+                case TESTPATH:
+                    booster.setFill(Color.BLACK);
                     break;
             }
             point.getChildren().add(booster);

@@ -48,7 +48,8 @@ public class Map {
         TELEPORT,
         MANIPULATOR,
         MYSTERIOUS_POINT,
-        NONE
+        NONE,
+        TESTPATH
     }
 
     private void findMapSize(String walls) {
