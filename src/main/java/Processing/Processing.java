@@ -103,25 +103,30 @@ public class Processing {
     }
 
     public static void leftHandMovingForOneRobot(Map map) {
-                RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
-        Field leftField = robot.getLeftField();
-        Field frontLeftField = robot.getFrontLeftField();
-        Field frontMiddleField = robot.getFrontMiddleField();
+            RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
+
         while (map.hasUnpainted()) {
+            ArrayList<Field> hands = robot.getHands();
+            Field leftField = robot.getLeftField();
+            Field frontLeftField = robot.getFrontLeftField();
+            Field frontMiddleField = robot.getFrontMiddleField();
             //добавил создание изображения поля для дебага во время дебага надо нажать show image
             Test debug = new Test();
             BufferedImage debugImage = debug.createImage(map);
-            if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
+            if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle() && !robot.areHandsObstacle()) {
                 robot.moveStraight();
-            } else if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle()) {
-                robot.moveLeft();
-            } else if (!leftField.isPaintedOrObstacle()) {
-                robot.moveStraight();
-                robot.moveStraight();
-                robot.turnLeft();
-            } else if (frontLeftField.isPaintedOrObstacle() || frontMiddleField.isPaintedOrObstacle()) {
+            } else if ((frontLeftField.getIsObstacle() && frontMiddleField.getIsObstacle() ||
+                    (hands.get(0).getIsObstacle() && hands.get(1).getIsObstacle()))) {
                 robot.turnRight();
-            }
+            }else if (!hands.get(0).getIsObstacle() && hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
+                robot.moveLeft();
+                //robot.moveStraight();
+            }  else if (!leftField.getIsObstacle() && !hands.get(0).getIsObstacle()) {
+                robot.moveStraight();
+                if (!frontLeftField.getIsObstacle()) robot.moveStraight();
+                robot.turnLeft();
+                robot.moveStraight();
+            }  else robot.moveStraight();
         }
     }
 }

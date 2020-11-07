@@ -2,6 +2,8 @@ package DataObjects;
 
 import ResultGenerator.ResultGenerator;
 
+import java.util.ArrayList;
+
 public class RobotWrappy2019 {
     private int x;
     private int y;
@@ -25,18 +27,20 @@ public class RobotWrappy2019 {
     private Field leftField;
     private Field frontLeftField;
     private Field frontMiddleField;
+    private Field body;
+    private final ArrayList<Field> hands = new ArrayList<>();
 
-    private Map map;
+    private final Map map;
 
     enum Orientation {
         UP(0, 1),
         RIGHT(1, 0),
         DOWN(0, -1),
         LEFT(-1, 0);
-        private static Orientation[] vals = values();
+        private static final Orientation[] vals = values();
 
-        private int dx;
-        private int dy;
+        private final int dx;
+        private final int dy;
 
         Orientation(int dx, int dy) {
             this.dx = dx;
@@ -48,7 +52,7 @@ public class RobotWrappy2019 {
         }
 
         public Orientation previous() {
-            return vals[(this.ordinal() - 1) % vals.length];
+            return vals[(this.ordinal() + 3) % vals.length];
         }
 
         public int getDx() {
@@ -67,32 +71,36 @@ public class RobotWrappy2019 {
         this.orientation = Orientation.UP;
 
         this.map = map;
-        countAndPaintFields();
+        countFields();
 
         id = counter++;
     }
 
-    private void countAndPaintFields() {
-        try {
-            leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
-                    [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
-        } catch (IndexOutOfBoundsException e) {
-            leftField = new Field(1, 1);
-            leftField.setIsObstacle(true);
+    private void countFields() {
+        body = checkField(x, y);
+        hands.clear();
+
+        for (int i = sizeOfLeftHand; i > 0; i--) {
+            hands.add(checkField(x + orientation.dx - i * orientation.dy,
+                    y + orientation.dy + i * orientation.dx));
         }
-        try {
-            frontLeftField = map.map[x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy]
-                    [y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx];
-        } catch (IndexOutOfBoundsException e) {
-            frontLeftField = new Field(1, 1);
-            frontLeftField.setIsObstacle(true);
+
+        for (int i = 0; i <= sizeOfRightHand; i++) {
+            hands.add(checkField(x + orientation.dx + i * orientation.dy,
+                    y + orientation.dy - i * orientation.dx));
         }
-        try {
-            frontMiddleField = map.map[x + orientation.dx * 2][y + orientation.dy * 2];
-        } catch (IndexOutOfBoundsException e) {
-            frontMiddleField = new Field(1, 1);
-            frontMiddleField.setIsObstacle(true);
-        }
+
+
+        leftField = checkField(x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy,
+                y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx);
+
+
+        frontLeftField = checkField(x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy,
+                y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx);
+
+
+        frontMiddleField = checkField(x + orientation.dx * 2, y + orientation.dy * 2);
+
         /*
          leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
                     [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
@@ -100,9 +108,22 @@ public class RobotWrappy2019 {
                 [y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx];
         frontMiddleField = map.map[x + orientation.dx * 2]
                 [y + orientation.dy * 2]; */
-        frontLeftField.setIsPainted(true);
-        frontMiddleField.setIsPainted(true);
+
         //map.map[robot.getX() + 1][robot.getY() + 1].setIsPainted(true);
+    }
+
+    private Field checkField(int newX, int newY) {
+        if (newX < 0 || newX >= map.sizeX || newY < 0 || newY >= map.sizeY) {
+            Field res = new Field(1, 1);
+            res.setIsObstacle(true);
+            return res;
+        }
+        return map.map[newX][newY];
+    }
+
+    private void paintFields() {
+        body.setIsPainted(true);
+        hands.forEach(field -> field.setIsPainted(true));
     }
 
     public int getX() {
@@ -122,18 +143,21 @@ public class RobotWrappy2019 {
     }
 
     public void turnRight() {
+        paintFields();
         resultGenerator.turnRight(id);
         orientation = orientation.next();
-        countAndPaintFields();
+        countFields();
     }
 
     public void turnLeft() {
+        paintFields();
         resultGenerator.turnLeft(id);
         orientation = orientation.previous();
-        countAndPaintFields();
+        countFields();
     }
 
     public void moveStraight() {
+        paintFields();
         switch (orientation) {
             case UP: {
                 resultGenerator.moveUp(id);
@@ -147,89 +171,85 @@ public class RobotWrappy2019 {
             break;
             case LEFT: {
                 resultGenerator.moveLeft(id);
-                x++;
+                x--;
             }
             break;
             default: {
                 resultGenerator.moveRight(id);
-                x--;
+                x++;
             }
             break;
         }
-        countAndPaintFields();
+        countFields();
     }
 
 
     public void moveLeft() {
+        paintFields();
         switch (orientation) {
             case UP: {
                 resultGenerator.moveLeft(id);
-                x++;
             }
             break;
             case DOWN: {
                 resultGenerator.moveRight(id);
-                x--;
             }
             break;
             case LEFT: {
-                resultGenerator.moveDown(id);
-                y--;
+                resultGenerator.moveUp(id);
             }
             break;
             default: {
-                resultGenerator.moveUp(id);
-                y++;
+                resultGenerator.moveDown(id);
             }
             break;
         }
-        countAndPaintFields();
+        x--;
+        countFields();
     }
 
     public void moveRight() {
+        paintFields();
         switch (orientation) {
             case UP: {
                 resultGenerator.moveRight(id);
-                x--;
             }
             break;
             case DOWN: {
                 resultGenerator.moveLeft(id);
-                x++;
             }
             break;
             case LEFT: {
-                resultGenerator.moveUp(id);
-                y++;
+                resultGenerator.moveDown(id);
             }
             break;
             default: {
-                resultGenerator.moveDown(id);
-                y--;
+                resultGenerator.moveUp(id);
             }
             break;
         }
-        countAndPaintFields();
+        x++;
+        countFields();
     }
 
     public void addLeftHand() {
         sizeOfLeftHand++;
         resultGenerator.addHand(
                 id,
-                orientation.dx - sizeOfLeftHand * orientation.dy,
-                orientation.dy + sizeOfLeftHand * orientation.dx);
+                orientation.dx - sizeOfLeftHand * orientation.dy + 1,
+                orientation.dy + sizeOfLeftHand * orientation.dx + 1);
         amountOfManipulatorBooster--;
-        countAndPaintFields();
+        countFields();
     }
 
     public void addRightHand() {
         sizeOfRightHand++;
         resultGenerator.addHand(
                 id,
-                orientation.dx + sizeOfRightHand * orientation.dy,
-                orientation.dy - sizeOfRightHand * orientation.dx);
+                orientation.dx + sizeOfRightHand * orientation.dy + 1,
+                orientation.dy - sizeOfRightHand * orientation.dx + 1);
         amountOfManipulatorBooster--;
-        countAndPaintFields();
+        countFields();
     }
 
 
@@ -266,6 +286,14 @@ public class RobotWrappy2019 {
 
     public Field getFrontMiddleField() {
         return frontMiddleField;
+    }
+
+    public ArrayList<Field> getHands() {
+        return hands;
+    }
+
+    public boolean areHandsObstacle() {
+        return hands.stream().anyMatch(Field::getIsObstacle);
     }
 
     public static ResultGenerator getResultGenerator() {
