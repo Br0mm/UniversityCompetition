@@ -105,7 +105,7 @@ public class Processing {
     public static void leftHandMovingForOneRobot(Map map) {
             RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
 
-        while (map.hasUnpainted()) {
+        while (map.getUnpaintedFields().size() > 0) {
             ArrayList<Field> hands = robot.getHands();
             Field leftField = robot.getLeftField();
             Field frontLeftField = robot.getFrontLeftField();

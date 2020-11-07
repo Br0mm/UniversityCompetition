@@ -12,12 +12,11 @@ public class Map {
 
     private String mapStringData;
     public Field[][] map;
-    //private List<ArrayList<Field>> map = new ArrayList<>();
     public int robotStartX;
     public int robotStartY;
     public int sizeX = 0;
     public int sizeY = 0;
-    private int unpainted = 0;
+    private List<Field> unpaintedFields = new ArrayList<>();
     public java.util.Map <Booster, List<Field>> boosterListMap = new HashMap<>();
     private WallDirection direction = WallDirection.NONE;
 
@@ -69,12 +68,9 @@ public class Map {
         sizeY = maxY + 1;
         map = new Field[sizeX][sizeY];
         for (int k = 0; k < sizeX; k++) {
-            //ArrayList <Field> line = new ArrayList<>();
             for (int j = 0; j < sizeY; j++) {
                 map[k][j] = new Field(k, j);
-                //line.add(new Field(k, j));
             }
-            //map.add(line);
         }
     }
 
@@ -186,21 +182,19 @@ public class Map {
         boosterListMap.get(currentBooster).add(map[x][y]);
     }
 
-
-    public boolean hasUnpainted() {
-        unpainted = 0;
+    public List<Field> getUnpaintedFields() {
         hasUnpaintedCheck(map[robotStartX][robotStartY]);
         for (int k = 0; k < sizeX; k++) {
             for (int j = 0; j < sizeY; j++) {
                 map[k][j].setIsPaintedCheck(false);
             }
         }
-        return unpainted > 0;
+        return unpaintedFields;
     }
 
     private void hasUnpaintedCheck(Field start) {
         if (!start.getIsPaintedCheck()) {
-            if (!start.getIsObstacle() && !start.getIsPainted()) unpainted++;
+            if (!start.getIsObstacle() && !start.getIsPainted()) unpaintedFields.add(start);
             start.setIsPaintedCheck(true);
             if (!start.getIsObstacle()) {
                 hasUnpaintedCheck(map[start.getX() + 1][start.getY()]);
