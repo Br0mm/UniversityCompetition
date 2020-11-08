@@ -27,7 +27,7 @@ public class RobotWrappy2019 {
     private Field leftField;
     private Field frontLeftField;
     private Field frontMiddleField;
-    private Field body;
+    private Field bodyField;
     private final ArrayList<Field> hands = new ArrayList<>();
 
     private final Map map;
@@ -72,12 +72,13 @@ public class RobotWrappy2019 {
 
         this.map = map;
         countFields();
+        paintFields();
 
         id = counter++;
     }
 
     private void countFields() {
-        body = checkField(x, y);
+        bodyField = checkField(x, y);
         hands.clear();
 
         for (int i = sizeOfLeftHand; i > 0; i--) {
@@ -122,7 +123,7 @@ public class RobotWrappy2019 {
     }
 
     private void paintFields() {
-        body.setIsPainted(true);
+        bodyField.setIsPainted(true);
         hands.forEach(field -> field.setIsPainted(true));
     }
 
@@ -184,7 +185,7 @@ public class RobotWrappy2019 {
     }
 
 
-    public void moveLeft() {
+    public void moveLeftRegardingTheRobot() {
         paintFields();
         switch (orientation) {
             case UP: {
@@ -208,7 +209,7 @@ public class RobotWrappy2019 {
         countFields();
     }
 
-    public void moveRight() {
+    public void moveRightRegardingTheRobot() {
         paintFields();
         switch (orientation) {
             case UP: {
@@ -229,6 +230,34 @@ public class RobotWrappy2019 {
             break;
         }
         x++;
+        countFields();
+    }
+
+    public void moveUp() {
+        paintFields();
+        resultGenerator.moveUp(id);
+        y++;
+        countFields();
+    }
+
+    public void moveDown() {
+        paintFields();
+        resultGenerator.moveDown(id);
+        y--;
+        countFields();
+    }
+
+    public void moveRight() {
+        paintFields();
+        resultGenerator.moveRight(id);
+        x++;
+        countFields();
+    }
+
+    public void moveLeft() {
+        paintFields();
+        resultGenerator.moveLeft(id);
+        x--;
         countFields();
     }
 
@@ -286,6 +315,10 @@ public class RobotWrappy2019 {
 
     public Field getFrontMiddleField() {
         return frontMiddleField;
+    }
+
+    public Field getBodyField() {
+        return bodyField;
     }
 
     public ArrayList<Field> getHands() {
