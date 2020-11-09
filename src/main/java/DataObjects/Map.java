@@ -1,8 +1,6 @@
 package DataObjects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Map {
     public Map(String data){
@@ -10,14 +8,15 @@ public class Map {
         generateMap();
     }
 
-    private String mapStringData;
+    private final String mapStringData;
     public Field[][] map;
-    //private List<ArrayList<Field>> map = new ArrayList<>();
     public int robotStartX;
     public int robotStartY;
+    public int currentRobotX;
+    public int currentRobotY;
     public int sizeX = 0;
     public int sizeY = 0;
-    private int unpainted = 0;
+    private List<Field> unpaintedFields = new ArrayList<>();
     public java.util.Map <Booster, List<Field>> boosterListMap = new HashMap<>();
     private WallDirection direction = WallDirection.NONE;
 
@@ -29,6 +28,8 @@ public class Map {
         direction = WallDirection.NONE;
         createObstacles(partOfInput[2]);
         createBoosters(partOfInput[3]);
+        currentRobotX = robotStartX;
+        currentRobotY = robotStartY;
     }
 
     //нужно для построения стен
@@ -69,12 +70,9 @@ public class Map {
         sizeY = maxY + 1;
         map = new Field[sizeX][sizeY];
         for (int k = 0; k < sizeX; k++) {
-            //ArrayList <Field> line = new ArrayList<>();
             for (int j = 0; j < sizeY; j++) {
                 map[k][j] = new Field(k, j);
-                //line.add(new Field(k, j));
             }
-            //map.add(line);
         }
     }
 
@@ -186,29 +184,47 @@ public class Map {
         boosterListMap.get(currentBooster).add(map[x][y]);
     }
 
-
-    public boolean hasUnpainted() {
-        unpainted = 0;
-        hasUnpaintedCheck(map[robotStartX][robotStartY]);
+    public List<Field> getUnpaintedFields() {
+        unpaintedFields = new ArrayList<>();
+        hasUnpaintedCheck(map[currentRobotX][currentRobotY]);
         for (int k = 0; k < sizeX; k++) {
             for (int j = 0; j < sizeY; j++) {
                 map[k][j].setIsPaintedCheck(false);
             }
         }
-        return unpainted > 0;
+        return unpaintedFields;
     }
 
     private void hasUnpaintedCheck(Field start) {
-        if (!start.getIsPaintedCheck()) {
-            if (!start.getIsObstacle() && !start.getIsPainted()) unpainted++;
-            start.setIsPaintedCheck(true);
-            if (!start.getIsObstacle()) {
-                hasUnpaintedCheck(map[start.getX() + 1][start.getY()]);
-                if (start.getX() != 0) hasUnpaintedCheck(map[start.getX() - 1][start.getY()]);
-                hasUnpaintedCheck(map[start.getX()][start.getY() + 1]);
-                if (start.getY() != 0) hasUnpaintedCheck(map[start.getX()][start.getY() - 1]);
+        Queue<Field> fieldsToVisit = new ArrayDeque<>();
+        fieldsToVisit.add(start);
+        Field currentPosition;
+        while (!fieldsToVisit.isEmpty()) {
+            currentPosition = fieldsToVisit.remove();
+            if (!currentPosition.getIsPaintedCheck()) {
+                if (!currentPosition.getIsObstacle() && !currentPosition.getIsPainted()) unpaintedFields.add(currentPosition);
+                currentPosition.setIsPaintedCheck(true);
+                if (!currentPosition.getIsObstacle()) {
+                    fieldsToVisit.add(map[currentPosition.getX() + 1][currentPosition.getY()]);
+                    if (currentPosition.getX() != 0) fieldsToVisit.add(map[currentPosition.getX() - 1][currentPosition.getY()]);
+                    fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() + 1]);
+                    if (currentPosition.getY() != 0) fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() - 1]);
+                }
             }
         }
+    }
+
+    public void setCurrentRobotX(int x) {
+        currentRobotX = x;
+    }
+
+    public void setCurrentRobotY(int y) {
+        currentRobotY = y;
+    }
+
+    public void setCurrentRobotXY(int x, int y) {
+        currentRobotX = x;
+        currentRobotY = y;
     }
 
     public List<Field> getClowns(){

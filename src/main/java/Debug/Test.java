@@ -28,6 +28,7 @@ public class Test extends JPanel {
     public Color createMapPart(Field field, int x, int y) {
         if (field.getIsObstacle()) return Color.BLACK;
         if (field.getIsPainted()) return Color.YELLOW;
+        if (field.booster.equals(Map.Booster.TESTPATH)) return Color.MAGENTA;
         /*
         if (!field.booster.equals(Map.Booster.NONE)) {
             Circle booster = new Circle();
