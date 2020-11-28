@@ -108,7 +108,7 @@ public class Processing {
 
         while (unpainted.size() > 0) {
             map.setCurrentRobotXY(robot.getX(), robot.getY());
-            unpainted = map.getUnpaintedFields();
+            //unpainted = map.getUnpaintedFields();
 
             ArrayList<Field> hands = robot.getHands();
             Field leftField = robot.getLeftField();
@@ -164,5 +164,7 @@ public class Processing {
                 robot.moveStraight();
             } else robot.moveStraight();
         }
+
+        unpainted = map.getUnpaintedFields();
     }
 }
