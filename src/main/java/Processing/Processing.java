@@ -123,7 +123,7 @@ public class Processing {
             Test debug = new Test();
             BufferedImage debugImage = debug.createImage(map);
 
-            if (pathToClosestUnpainted.size() > 2) {
+            if (pathToClosestUnpainted.size() > 3) {
                 Field previousField;
                 Field currentField = robot.getBodyField();
                 for (int i = 1; i < pathToClosestUnpainted.size(); i++) {
