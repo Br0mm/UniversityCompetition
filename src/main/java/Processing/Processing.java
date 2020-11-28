@@ -18,6 +18,7 @@ public class Processing {
         private final int moveStraightCost = 10;
 
         public static List<Field> findPath(Field startField, Field endField, Map map) {
+            map.clearCostsForAStar();
             final List<Field> openList = new ArrayList<>();
             final List<Field> closedList = new ArrayList<>();
             openList.add(startField);
@@ -28,8 +29,7 @@ public class Processing {
 
             while (!openList.isEmpty()) { //
                 Field currentField = getLowestFCostField(openList);
-                if (currentField == endField)
-                    return calculatePath(endField);
+                if (currentField == endField) return calculatePath(endField);
                 openList.remove(currentField);
                 closedList.add(currentField);
 
@@ -115,15 +115,13 @@ public class Processing {
             Field frontLeftField = robot.getFrontLeftField();
             Field frontMiddleField = robot.getFrontMiddleField();
             Field bodyField = robot.getBodyField();
-
+            Test debug = new Test();
+            BufferedImage debugImage = debug.createImage(map);
             List<Field> pathToClosestUnpainted = Pathfinding.findPath(bodyField, unpainted.get(0), map);
 
 
             //добавил создание изображения поля для дебага во время дебага надо нажать show image
-            Test debug = new Test();
-            BufferedImage debugImage = debug.createImage(map);
-
-            if (pathToClosestUnpainted.size() > 3) {
+            if (pathToClosestUnpainted.size() > 2) {
                 Field previousField;
                 Field currentField = robot.getBodyField();
                 for (int i = 1; i < pathToClosestUnpainted.size(); i++) {
@@ -163,8 +161,9 @@ public class Processing {
                 robot.turnLeft();
                 robot.moveStraight();
             } else robot.moveStraight();
+            unpainted = map.getUnpaintedFields();
         }
 
-        unpainted = map.getUnpaintedFields();
+
     }
 }

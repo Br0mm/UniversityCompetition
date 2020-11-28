@@ -214,6 +214,17 @@ public class Map {
         }
     }
 
+    public void clearCostsForAStar() {
+        for (int k = 0; k < sizeX; k++) {
+            for (int j = 0; j < sizeY; j++) {
+                map[k][j].setFCost(Integer.MAX_VALUE);
+                map[k][j].setGCost(Integer.MAX_VALUE);
+                map[k][j].setHCost(0);
+                map[k][j].setPreviousField(null);
+            }
+        }
+    }
+
     public void setCurrentRobotX(int x) {
         currentRobotX = x;
     }

@@ -15,9 +15,9 @@ public class Field {
     //это поле нужно, чтобы находить оставшиеся незакрашенные места, которые нужно закрасить
     private boolean isPaintedCheck = false;
     private boolean isObstacle = false;
-    private int gCost = 0;
+    private int gCost;
     private int hCost = 0;
-    private int fCost = 0;
+    private int fCost;
     private Field previousField = null;
 
     public int calculateFCost() {
