@@ -25,6 +25,7 @@ public class RobotWrappy2019 {
     private Orientation orientation;
 
     private Field leftField;
+    private Field rightField;
     private Field frontLeftField;
     private Field frontMiddleField;
     private Field bodyField;
@@ -309,6 +310,10 @@ public class RobotWrappy2019 {
         return leftField;
     }
 
+    public Field getRightField() {
+        return rightField;
+    }
+
     public Field getFrontLeftField() {
         return frontLeftField;
     }
@@ -324,6 +329,12 @@ public class RobotWrappy2019 {
     public ArrayList<Field> getHands() {
         return hands;
     }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+
 
     public boolean areHandsObstacle() {
         return hands.stream().anyMatch(Field::getIsObstacle);

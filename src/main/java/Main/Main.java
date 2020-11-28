@@ -14,6 +14,7 @@ public class Main {
             Map test = new Map(reader.readLine());
             Processing.leftHandMovingForOneRobot(test);
             String result = RobotWrappy2019.getResultGenerator().getResult();
+            System.out.println(result.length());
         }
     }
 }

@@ -103,7 +103,7 @@ public class Processing {
 
     public static void leftHandMovingForOneRobot(Map map) {
         RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
-        List<Field> unpainted = map.getUnpaintedFields();
+        List<Field> unpainted = map.getUnpaintedFields(robot);
 
 
         while (unpainted.size() > 0) {
@@ -121,7 +121,7 @@ public class Processing {
 
 
             //добавил создание изображения поля для дебага во время дебага надо нажать show image
-            if (pathToClosestUnpainted.size() > 2) {
+            if (pathToClosestUnpainted.size() > 3) {
                 Field previousField;
                 Field currentField = robot.getBodyField();
                 for (int i = 1; i < pathToClosestUnpainted.size(); i++) {
@@ -161,7 +161,7 @@ public class Processing {
                 robot.turnLeft();
                 robot.moveStraight();
             } else robot.moveStraight();
-            unpainted = map.getUnpaintedFields();
+            unpainted = map.getUnpaintedFields(robot);
         }
 
 

@@ -25,9 +25,9 @@ public class MapView extends Application {
 
     @Override
     public void start (Stage primaryStage) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-003.desc"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("input/prob-284.desc"))))) {
             Map test = new Map(reader.readLine());
-            //Processing.leftHandMovingForOneRobot(test);
+            Processing.leftHandMovingForOneRobot(test);
             test.clearCostsForAStar();
             List<Field> path = Processing.Pathfinding.findPath(test.map[6][28], test.map[9][27], test);
             for (int i = 0; i < path.size(); i ++) {
@@ -43,14 +43,11 @@ public class MapView extends Application {
             map.setPrefHeight(height);
             map.setPrefWidth(width);
 
-            /*
             for (int i = 0; i < test.sizeX; i++) {
                 for (int j = 0; j < test.sizeY; j++) {
                     map.getChildren().add(createMapPart(test.map[i][j], i * bodySize, height - j * bodySize));
                 }
             }
-
-             */
             Scene showMap = new Scene(map);
             String result = RobotWrappy2019.getResultGenerator().getResult();
             Test debug = new Test();
