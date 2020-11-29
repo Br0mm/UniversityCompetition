@@ -4,6 +4,7 @@ import DataObjects.Field;
 import DataObjects.Map;
 import DataObjects.RobotWrappy2019;
 import Debug.Test;
+import javafx.util.Pair;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -103,8 +104,9 @@ public class Processing {
 
     public static void leftHandMovingForOneRobot(Map map) {
         RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
+        List<Pair<Integer, Integer>> lastFourXAndY = new ArrayList<>();
         List<Field> unpainted = map.getUnpaintedFields(robot);
-
+        boolean isStayingOnOnePoint = false;
 
         while (unpainted.size() > 0) {
             map.setCurrentRobotXY(robot.getX(), robot.getY());
@@ -121,7 +123,7 @@ public class Processing {
 
 
             //добавил создание изображения поля для дебага во время дебага надо нажать show image
-            if (pathToClosestUnpainted.size() > 3) {
+            if (pathToClosestUnpainted.size() > 4 || isStayingOnOnePoint) {
                 Field previousField;
                 Field currentField = robot.getBodyField();
                 for (int i = 1; i < pathToClosestUnpainted.size(); i++) {
@@ -144,11 +146,15 @@ public class Processing {
                             break;
                     }
                 }
+                isStayingOnOnePoint = false;
             }
 
             if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle() &&
                     !hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
                 robot.moveStraight();
+            } else if (hands.get(0).isPaintedOrObstacle() && !hands.get(robot.getSizeOfLeftHand()).isPaintedOrObstacle()) {
+                robot.moveStraight();
+                robot.moveRightRegardingTheRobot();
             } else if ((frontLeftField.isPaintedOrObstacle() && frontMiddleField.isPaintedOrObstacle() ||
                     (hands.get(0).isPaintedOrObstacle() && hands.get(1).isPaintedOrObstacle()))) {
                 robot.turnRight();
@@ -162,8 +168,20 @@ public class Processing {
                 robot.moveStraight();
             } else robot.moveStraight();
             unpainted = map.getUnpaintedFields(robot);
+
+
+            lastFourXAndY.add(new Pair<>(robot.getX(), robot.getY()));
+            if (lastFourXAndY.size() > 4) lastFourXAndY.remove(0);
+
+            if (lastFourXAndY.size() == 4 &&
+                    lastFourXAndY.get(0).getKey().equals(lastFourXAndY.get(1).getKey()) &&
+                    lastFourXAndY.get(1).getKey().equals(lastFourXAndY.get(2).getKey()) &&
+                    lastFourXAndY.get(2).getKey().equals(lastFourXAndY.get(3).getKey()) &&
+                    lastFourXAndY.get(0).getValue().equals(lastFourXAndY.get(1).getValue()) &&
+                    lastFourXAndY.get(1).getValue().equals(lastFourXAndY.get(2).getValue()) &&
+                    lastFourXAndY.get(2).getValue().equals(lastFourXAndY.get(3).getValue())) {
+                isStayingOnOnePoint = true;
+            }
         }
-
-
     }
 }

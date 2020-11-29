@@ -96,22 +96,14 @@ public class RobotWrappy2019 {
         leftField = checkField(x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy,
                 y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx);
 
+        rightField = checkField(x + orientation.dx + (sizeOfLeftHand + 1) * orientation.dy,
+                y + orientation.dy - (sizeOfLeftHand + 1) * orientation.dx);
 
         frontLeftField = checkField(x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy,
                 y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx);
 
 
         frontMiddleField = checkField(x + orientation.dx * 2, y + orientation.dy * 2);
-
-        /*
-         leftField = map.map[x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy]
-                    [y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx];
-        frontLeftField = map.map[x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy]
-                [y + orientation.dy * 2 + sizeOfLeftHand * orientation.dx];
-        frontMiddleField = map.map[x + orientation.dx * 2]
-                [y + orientation.dy * 2]; */
-
-        //map.map[robot.getX() + 1][robot.getY() + 1].setIsPainted(true);
     }
 
     private Field checkField(int newX, int newY) {
