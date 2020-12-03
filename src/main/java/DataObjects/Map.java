@@ -197,7 +197,15 @@ public class Map {
 
     private void hasUnpaintedCheck(Field start, RobotWrappy2019 robot) {
         Queue<Field> fieldsToVisit = new ArrayDeque<>();
-        fieldsToVisit.add(start);
+        start.setIsPaintedCheck(true);
+        Field frontField = map[robot.getX() + robot.getOrientation().getDx()][robot.getX() + robot.getOrientation().getDy()];
+        Field leftField = robot.getLeftField();
+        Field rightField = robot.getRightField();
+        Field backField = map[robot.getX() - robot.getOrientation().getDx()][robot.getX() - robot.getOrientation().getDy()];
+        fieldsToVisit.add(frontField);
+        fieldsToVisit.add(leftField);
+        fieldsToVisit.add(rightField);
+        fieldsToVisit.add(backField);
         Field currentPosition;
         while (!fieldsToVisit.isEmpty()) {
             currentPosition = fieldsToVisit.remove();
@@ -205,11 +213,6 @@ public class Map {
                 if (!currentPosition.getIsObstacle() && !currentPosition.getIsPainted()) unpaintedFields.add(currentPosition);
                 currentPosition.setIsPaintedCheck(true);
                 if (!currentPosition.getIsObstacle()) {
-                    /*
-                    Field frontField = map[robot.getX() + robot.getOrientation().getDx()][robot.getX() + robot.getOrientation().getDy()];
-                    Field leftField = robot.getLeftField();
-                    Field backField = map[robot.getX() - robot.getOrientation().getDx()][robot.getX() - robot.getOrientation().getDy()];
-                     */
                     fieldsToVisit.add(map[currentPosition.getX() + 1][currentPosition.getY()]);
                     if (currentPosition.getX() != 0) fieldsToVisit.add(map[currentPosition.getX() - 1][currentPosition.getY()]);
                     fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() + 1]);
