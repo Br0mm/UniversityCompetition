@@ -18,7 +18,7 @@ public class Test extends JPanel {
         Color color;
         for (int i = 0; i < currentMap.sizeX; i++) {
             for (int j = 0; j < currentMap.sizeY; j++) {
-                color = createMapPart(currentMap.map[i][j], i, (height - j));
+                color = createMapPart(currentMap.map[i][j], currentMap.currentRobotX, currentMap.currentRobotY);
                 bufferedImage.setRGB(i,(height - j - 1), color.getRGB());
             }
         }
@@ -26,6 +26,7 @@ public class Test extends JPanel {
     }
 
     public Color createMapPart(Field field, int x, int y) {
+        if (field.getX() == x && field.getY() == y) return Color.RED;
         if (field.getIsObstacle()) return Color.BLACK;
         if (field.getIsPainted()) return Color.YELLOW;
         if (field.booster.equals(Map.Booster.TESTPATH)) return Color.MAGENTA;

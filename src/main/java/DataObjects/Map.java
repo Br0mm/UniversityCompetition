@@ -1,5 +1,8 @@
 package DataObjects;
 
+import Debug.Test;
+
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Map {
@@ -28,6 +31,7 @@ public class Map {
         direction = WallDirection.NONE;
         createObstacles(partOfInput[2]);
         createBoosters(partOfInput[3]);
+        unpaintFields();
         currentRobotX = robotStartX;
         currentRobotY = robotStartY;
     }
@@ -72,6 +76,7 @@ public class Map {
         for (int k = 0; k < sizeX; k++) {
             for (int j = 0; j < sizeY; j++) {
                 map[k][j] = new Field(k, j);
+                map[k][j].setIsPainted(true);
             }
         }
     }
@@ -92,7 +97,7 @@ public class Map {
                 }
             }
         } else
-        if (currentY != previousX) {
+        if (currentY != previousY) {
             if (currentY > previousY) {
                 direction = WallDirection.UP;
                 for (int j = previousY; j < currentY; j++) {
@@ -147,6 +152,31 @@ public class Map {
         }
     }
 
+    private void unpaintFields() {
+        Queue<Field> fieldsToVisit = new ArrayDeque<>();
+        fieldsToVisit.add(map[robotStartX][robotStartY]);
+        Field currentPosition;
+        while (!fieldsToVisit.isEmpty()) {
+            currentPosition = fieldsToVisit.remove();
+            if (!currentPosition.getIsPaintedCheck()) {
+                currentPosition.setIsPaintedCheck(true);
+                if (!currentPosition.getIsObstacle()) {
+                    currentPosition.setIsPainted(false);
+                    if (currentPosition.getX() != sizeX - 1) fieldsToVisit.add(map[currentPosition.getX() + 1][currentPosition.getY()]);
+                    if (currentPosition.getX() != 0) fieldsToVisit.add(map[currentPosition.getX() - 1][currentPosition.getY()]);
+                    if (currentPosition.getY() != sizeY - 1) fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() + 1]);
+                    if (currentPosition.getY() != 0) fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() - 1]);
+                }
+            }
+        }
+        for (int k = 0; k < sizeX; k++) {
+            for (int j = 0; j < sizeY; j++) {
+                map[k][j].setIsPaintedCheck(false);
+                if (map[k][j].getIsPainted()) map[k][j].setIsObstacle(true);
+            }
+        }
+    }
+
     private void createBoosters(String obstacles) {
         if (obstacles.equals("")) return;
         String[] boosters = obstacles.split(";");
@@ -197,15 +227,15 @@ public class Map {
 
     private void hasUnpaintedCheck(Field start, RobotWrappy2019 robot) {
         Queue<Field> fieldsToVisit = new ArrayDeque<>();
-        start.setIsPaintedCheck(true);
-        Field frontField = map[robot.getX() + robot.getOrientation().getDx()][robot.getX() + robot.getOrientation().getDy()];
+        Field frontField = robot.getFrontMiddleField();
         Field leftField = robot.getLeftField();
         Field rightField = robot.getRightField();
-        Field backField = map[robot.getX() - robot.getOrientation().getDx()][robot.getX() - robot.getOrientation().getDy()];
+        //Field backField = map[robot.getX() - robot.getOrientation().getDx()][robot.getX() - robot.getOrientation().getDy()];
         fieldsToVisit.add(frontField);
         fieldsToVisit.add(leftField);
         fieldsToVisit.add(rightField);
-        fieldsToVisit.add(backField);
+        fieldsToVisit.add(start);
+        //fieldsToVisit.add(backField);
         Field currentPosition;
         while (!fieldsToVisit.isEmpty()) {
             currentPosition = fieldsToVisit.remove();
@@ -213,9 +243,9 @@ public class Map {
                 if (!currentPosition.getIsObstacle() && !currentPosition.getIsPainted()) unpaintedFields.add(currentPosition);
                 currentPosition.setIsPaintedCheck(true);
                 if (!currentPosition.getIsObstacle()) {
-                    fieldsToVisit.add(map[currentPosition.getX() + 1][currentPosition.getY()]);
+                    if (currentPosition.getX() != sizeX - 1) fieldsToVisit.add(map[currentPosition.getX() + 1][currentPosition.getY()]);
                     if (currentPosition.getX() != 0) fieldsToVisit.add(map[currentPosition.getX() - 1][currentPosition.getY()]);
-                    fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() + 1]);
+                    if (currentPosition.getY() != sizeY - 1) fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() + 1]);
                     if (currentPosition.getY() != 0) fieldsToVisit.add(map[currentPosition.getX()][currentPosition.getY() - 1]);
                 }
             }
