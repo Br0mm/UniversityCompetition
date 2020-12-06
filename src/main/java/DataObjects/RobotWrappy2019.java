@@ -24,11 +24,12 @@ public class RobotWrappy2019 {
 
     private Orientation orientation;
 
-    private Field leftField;
-    private Field rightField;
+    private Field leftFieldRegardingToHands;
+    private Field rightFieldRegardingToHands;
     private Field frontLeftField;
     private Field frontMiddleField;
     private Field bodyField;
+    private Field leftField;
     private final ArrayList<Field> hands = new ArrayList<>();
 
     private final Map map;
@@ -91,12 +92,12 @@ public class RobotWrappy2019 {
             hands.add(checkField(x + orientation.dx + i * orientation.dy,
                     y + orientation.dy - i * orientation.dx));
         }
+        leftField = checkField(x - orientation.dy, y + orientation.dx);
 
-
-        leftField = checkField(x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy,
+        leftFieldRegardingToHands = checkField(x + orientation.dx - (sizeOfLeftHand + 1) * orientation.dy,
                 y + orientation.dy + (sizeOfLeftHand + 1) * orientation.dx);
 
-        rightField = checkField(x + orientation.dx + (sizeOfLeftHand + 1) * orientation.dy,
+        rightFieldRegardingToHands = checkField(x + orientation.dx + (sizeOfLeftHand + 1) * orientation.dy,
                 y + orientation.dy - (sizeOfLeftHand + 1) * orientation.dx);
 
         frontLeftField = checkField(x + orientation.dx * 2 - sizeOfLeftHand * orientation.dy,
@@ -183,22 +184,25 @@ public class RobotWrappy2019 {
         switch (orientation) {
             case UP: {
                 resultGenerator.moveLeft(id);
+                x--;
             }
             break;
             case DOWN: {
                 resultGenerator.moveRight(id);
+                x++;
             }
             break;
             case LEFT: {
-                resultGenerator.moveUp(id);
+                resultGenerator.moveDown(id);
+                y--;
             }
             break;
             default: {
-                resultGenerator.moveDown(id);
+                resultGenerator.moveUp(id);
+                y++;
             }
             break;
         }
-        x--;
         countFields();
     }
 
@@ -207,23 +211,106 @@ public class RobotWrappy2019 {
         switch (orientation) {
             case UP: {
                 resultGenerator.moveRight(id);
+                x++;
             }
             break;
             case DOWN: {
                 resultGenerator.moveLeft(id);
+                x--;
             }
             break;
             case LEFT: {
-                resultGenerator.moveDown(id);
+                resultGenerator.moveUp(id);
+                y++;
             }
             break;
             default: {
-                resultGenerator.moveUp(id);
+                resultGenerator.moveDown(id);
+                y--;
             }
             break;
         }
-        x++;
         countFields();
+    }
+
+    public void setOrientationLeft() {
+        //paintFields();
+        switch (orientation) {
+            case UP: {
+                turnLeft();
+            }
+            break;
+            case DOWN: {
+                turnRight();
+            }
+            break;
+            case RIGHT: {
+                turnLeft();
+                turnLeft();
+            }
+            break;
+        }
+        //countFields();
+    }
+
+    public void setOrientationRight() {
+        //paintFields();
+        switch (orientation) {
+            case DOWN: {
+                turnLeft();
+            }
+            break;
+            case UP: {
+                turnRight();
+            }
+            break;
+            case LEFT: {
+                turnLeft();
+                turnLeft();
+            }
+            break;
+        }
+        //countFields();
+    }
+
+    public void setOrientationUp() {
+        //paintFields();
+        switch (orientation) {
+            case LEFT: {
+                turnRight();
+            }
+            break;
+            case DOWN: {
+                turnLeft();
+                turnLeft();
+            }
+            break;
+            case RIGHT: {
+                turnLeft();
+            }
+            break;
+        }
+        //countFields();
+    }
+
+    public void setOrientationDown() {
+        //paintFields();
+        switch (orientation) {
+            case UP: {
+                turnLeft();
+                turnLeft();
+            }
+            break;
+            case LEFT: {
+                turnLeft();
+            }
+            break;
+            case RIGHT: {
+                turnRight();
+            }
+            break;
+        }
+        //countFields();
     }
 
     public void moveUp() {
@@ -298,12 +385,12 @@ public class RobotWrappy2019 {
         resultGenerator.useTeleport(id, x, y);
     }
 
-    public Field getLeftField() {
-        return leftField;
+    public Field getLeftFieldRegardingToHands() {
+        return leftFieldRegardingToHands;
     }
 
-    public Field getRightField() {
-        return rightField;
+    public Field getRightFieldRegardingToHands() {
+        return rightFieldRegardingToHands;
     }
 
     public Field getFrontLeftField() {
@@ -318,6 +405,10 @@ public class RobotWrappy2019 {
         return bodyField;
     }
 
+    public Field getLeftField() {
+        return leftField;
+    }
+
     public ArrayList<Field> getHands() {
         return hands;
     }
@@ -325,8 +416,6 @@ public class RobotWrappy2019 {
     public Orientation getOrientation() {
         return orientation;
     }
-
-
 
     public boolean areHandsObstacle() {
         return hands.stream().anyMatch(Field::getIsObstacle);

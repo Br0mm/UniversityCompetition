@@ -113,17 +113,18 @@ public class Processing {
             //unpainted = map.getUnpaintedFields();
 
             ArrayList<Field> hands = robot.getHands();
-            Field leftField = robot.getLeftField();
+            Field leftFieldRegardingToHands = robot.getLeftFieldRegardingToHands();
             Field frontLeftField = robot.getFrontLeftField();
             Field frontMiddleField = robot.getFrontMiddleField();
             Field bodyField = robot.getBodyField();
+            Field leftField = robot.getLeftField();
             Test debug = new Test();
             BufferedImage debugImage = debug.createImage(map);
             List<Field> pathToClosestUnpainted = Pathfinding.findPath(bodyField, unpainted.get(0), map);
 
 
             //добавил создание изображения поля для дебага во время дебага надо нажать show image
-            if (pathToClosestUnpainted.size() > 4 || isStayingOnOnePoint) {
+            if (pathToClosestUnpainted.size() > 5 || isStayingOnOnePoint) {
                 Field previousField;
                 Field currentField = robot.getBodyField();
                 for (int i = 1; i < pathToClosestUnpainted.size(); i++) {
@@ -131,44 +132,61 @@ public class Processing {
                     currentField = pathToClosestUnpainted.get(i);
                     switch (currentField.getX() - previousField.getX()) {
                         case -1:
-                            robot.moveLeft();
+                            robot.setOrientationLeft();
+                            robot.moveStraight();
                             break;
                         case 1:
-                            robot.moveRight();
+                            robot.setOrientationRight();
+                            robot.moveStraight();
                             break;
                     }
                     switch (currentField.getY() - previousField.getY()) {
                         case 1:
-                            robot.moveUp();
+                            robot.setOrientationUp();
+                            robot.moveStraight();
                             break;
                         case -1:
-                            robot.moveDown();
+                            robot.setOrientationDown();
+                            robot.moveStraight();
                             break;
                     }
                 }
                 isStayingOnOnePoint = false;
-            }
-
-            if (leftField.isPaintedOrObstacle() && !frontMiddleField.isPaintedOrObstacle() &&
+            } else if (leftFieldRegardingToHands.isPaintedOrObstacle() &&
+                    !frontMiddleField.isPaintedOrObstacle() &&
                     !hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
                 robot.moveStraight();
-            } else if (hands.get(0).isPaintedOrObstacle() && !hands.get(robot.getSizeOfLeftHand()).isPaintedOrObstacle()) {
+            } else if (hands.get(0).isPaintedOrObstacle() &&
+                    !hands.get(robot.getSizeOfLeftHand()).isPaintedOrObstacle() &&
+                    !hands.get(hands.size() - 1).isPaintedOrObstacle()) {
                 robot.moveStraight();
                 robot.moveRightRegardingTheRobot();
-            } else if ((frontLeftField.isPaintedOrObstacle() && frontMiddleField.isPaintedOrObstacle() ||
+            } else if ((!frontLeftField.isPaintedOrObstacle() &&
+                    frontMiddleField.isPaintedOrObstacle()) &&
+                    !leftField.isPaintedOrObstacle()) {
+                robot.moveLeftRegardingTheRobot();
+            } else if ((frontLeftField.isPaintedOrObstacle() &&
+                    frontMiddleField.isPaintedOrObstacle() &&
+                    leftFieldRegardingToHands.isPaintedOrObstacle() ||
                     (hands.get(0).isPaintedOrObstacle() && hands.get(1).isPaintedOrObstacle()))) {
                 robot.turnRight();
-            } else if (!hands.get(0).isPaintedOrObstacle() && hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
+            } else if (!hands.get(0).isPaintedOrObstacle() &&
+                    hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
                 robot.moveLeftRegardingTheRobot();
                 //robot.moveStraight();
-            } else if (!leftField.isPaintedOrObstacle() && !hands.get(0).isPaintedOrObstacle()) {
+            } else if (!leftFieldRegardingToHands.isPaintedOrObstacle() &&
+                    !hands.get(0).isPaintedOrObstacle()) {
                 robot.moveStraight();
-                if (!frontMiddleField.isPaintedOrObstacle()) robot.moveStraight();
+                if (!frontMiddleField.isPaintedOrObstacle() && !frontLeftField.isPaintedOrObstacle()) {
+                    robot.moveStraight();
+                }
                 robot.turnLeft();
                 robot.moveStraight();
             } else robot.moveStraight();
             unpainted = map.getUnpaintedFields(robot);
-
+            if (unpainted.size() < 10) {
+                System.out.println("Less than 10 unpainted");
+            }
 
             lastFourXAndY.add(new Pair<>(robot.getX(), robot.getY()));
             if (lastFourXAndY.size() > 4) lastFourXAndY.remove(0);
@@ -182,6 +200,7 @@ public class Processing {
                     lastFourXAndY.get(2).getValue().equals(lastFourXAndY.get(3).getValue())) {
                 isStayingOnOnePoint = true;
             }
+
         }
     }
 }

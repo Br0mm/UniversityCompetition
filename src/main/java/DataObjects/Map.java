@@ -1,8 +1,5 @@
 package DataObjects;
 
-import Debug.Test;
-
-import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Map {
@@ -228,8 +225,8 @@ public class Map {
     private void hasUnpaintedCheck(Field start, RobotWrappy2019 robot) {
         Queue<Field> fieldsToVisit = new ArrayDeque<>();
         Field frontField = robot.getFrontMiddleField();
-        Field leftField = robot.getLeftField();
-        Field rightField = robot.getRightField();
+        Field leftField = robot.getLeftFieldRegardingToHands();
+        Field rightField = robot.getRightFieldRegardingToHands();
         //Field backField = map[robot.getX() - robot.getOrientation().getDx()][robot.getX() - robot.getOrientation().getDy()];
         fieldsToVisit.add(frontField);
         fieldsToVisit.add(leftField);
