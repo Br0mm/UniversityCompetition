@@ -9,10 +9,18 @@ public class ResultGenerator {
         commands.add(new StringBuilder());
     }
 
-    public void deleteLastFourCommands(int number) {
-        StringBuilder sb = commands.get(number);
-        int length = sb.length();
-        commands.set(number, sb.delete(length - 4, length - 1));
+    public int deleteLastTurnsRight(int number) {
+        int res = 0;
+        for (int i = 0; i < 4; i++) {
+            StringBuilder sb = commands.get(number);
+            int length = sb.length();
+            int index = sb.lastIndexOf("E");
+            if (index == length - 1) {
+                commands.set(number, sb.deleteCharAt(index));
+                res++;
+            }
+        }
+        return res;
     }
 
     public void turnRight(int number){

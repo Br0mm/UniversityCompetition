@@ -197,7 +197,7 @@ public class Processing {
                     lastFourXAndY.get(1).getValue().equals(lastFourXAndY.get(2).getValue()) &&
                     lastFourXAndY.get(2).getValue().equals(lastFourXAndY.get(3).getValue())) {
                 isStayingOnOnePoint = true;
-                robot.deleteLastFourCommands();
+                robot.deleteLastTurnsRight();
             }
 
         }
