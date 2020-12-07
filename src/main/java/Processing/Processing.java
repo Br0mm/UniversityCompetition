@@ -153,15 +153,15 @@ public class Processing {
                     }
                 }
                 isStayingOnOnePoint = false;
-            } else if (leftFieldRegardingToHands.isPaintedOrObstacle() &&
-                    !frontMiddleField.isPaintedOrObstacle() &&
-                    !hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
-                robot.moveStraight();
             } else if (hands.get(0).isPaintedOrObstacle() &&
                     !hands.get(robot.getSizeOfLeftHand()).isPaintedOrObstacle() &&
                     !hands.get(hands.size() - 1).isPaintedOrObstacle()) {
                 robot.moveStraight();
                 robot.moveRightRegardingTheRobot();
+            } else if (leftFieldRegardingToHands.isPaintedOrObstacle() &&
+                    !frontMiddleField.isPaintedOrObstacle() &&
+                    !hands.get(robot.getSizeOfLeftHand()).getIsObstacle()) {
+                robot.moveStraight();
             } else if ((!frontLeftField.isPaintedOrObstacle() &&
                     frontMiddleField.isPaintedOrObstacle()) &&
                     !leftField.isPaintedOrObstacle()) {
@@ -197,6 +197,7 @@ public class Processing {
                     lastFourXAndY.get(1).getValue().equals(lastFourXAndY.get(2).getValue()) &&
                     lastFourXAndY.get(2).getValue().equals(lastFourXAndY.get(3).getValue())) {
                 isStayingOnOnePoint = true;
+                robot.deleteLastFourCommands();
             }
 
         }

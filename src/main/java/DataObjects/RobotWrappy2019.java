@@ -381,6 +381,10 @@ public class RobotWrappy2019 {
         amountOfTeleportBooster--;
     }
 
+    public void deleteLastFourCommands() {
+        resultGenerator.deleteLastFourCommands(id);
+    }
+
     public void useTeleport(int x, int y) {
         resultGenerator.useTeleport(id, x, y);
     }

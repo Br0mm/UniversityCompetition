@@ -9,6 +9,12 @@ public class ResultGenerator {
         commands.add(new StringBuilder());
     }
 
+    public void deleteLastFourCommands(int number) {
+        StringBuilder sb = commands.get(number);
+        int length = sb.length();
+        commands.set(number, sb.delete(length - 4, length - 1));
+    }
+
     public void turnRight(int number){
         commands.get(number).append("E");
     }

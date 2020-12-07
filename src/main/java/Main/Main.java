@@ -17,8 +17,8 @@ public class Main {
                             Processing.leftHandMovingForOneRobot(test);
                             String result = RobotWrappy2019.getResultGenerator().getResult();
                             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output/prob-" + i + j + k + ".sol")))) {
-                               writer.write(result);
+                                writer.write(result);
                             }
-        }
+                        }
     }
 }
