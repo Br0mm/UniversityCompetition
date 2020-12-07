@@ -26,8 +26,11 @@ public class Map {
         createWalls(partOfInput[0], 1);
         createStartPoint(partOfInput[1]);
         direction = WallDirection.NONE;
-        createObstacles(partOfInput[2]);
-        createBoosters(partOfInput[3]);
+        if (partOfInput.length > 2) {
+            createObstacles(partOfInput[2]);
+            createBoosters(partOfInput[3]);
+        }
+
         unpaintFields();
         currentRobotX = robotStartX;
         currentRobotY = robotStartY;

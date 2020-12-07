@@ -70,13 +70,13 @@ public class RobotWrappy2019 {
         this.x = x;
         this.y = y;
 
-        this.orientation = Orientation.UP;
+        this.orientation = Orientation.RIGHT;
 
         this.map = map;
         countFields();
         paintFields();
 
-        id = counter++;
+        //id = counter++;
     }
 
     private void countFields() {

@@ -104,6 +104,7 @@ public class Processing {
 
     public static void leftHandMovingForOneRobot(Map map) {
         RobotWrappy2019 robot = new RobotWrappy2019(map.robotStartX, map.robotStartY, map);
+        robot.turnLeft();
         List<Pair<Integer, Integer>> lastFourXAndY = new ArrayList<>();
         List<Field> unpainted = map.getUnpaintedFields(robot);
         boolean isStayingOnOnePoint = false;
@@ -184,9 +185,6 @@ public class Processing {
                 robot.moveStraight();
             } else robot.moveStraight();
             unpainted = map.getUnpaintedFields(robot);
-            if (unpainted.size() < 10) {
-                System.out.println("Less than 10 unpainted");
-            }
 
             lastFourXAndY.add(new Pair<>(robot.getX(), robot.getY()));
             if (lastFourXAndY.size() > 4) lastFourXAndY.remove(0);
