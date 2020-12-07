@@ -18,6 +18,7 @@ public class Main {
                             String result = RobotWrappy2019.getResultGenerator().getResult();
                             try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output/prob-" + i + j + k + ".sol")))) {
                                 writer.write(result);
+                                System.out.println("Map " + i + j + k + " is done");
                             }
                         }
     }
