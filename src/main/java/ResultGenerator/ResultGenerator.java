@@ -68,6 +68,8 @@ public class ResultGenerator {
                 separators--;
             }
         }
+        commands = new ArrayList<>();
+        commands.add(new StringBuilder());
         return result.toString();
     }
 }
